@@ -1,5 +1,13 @@
 # Employee Map Dashboard application
 
+## Developers
+1. a
+2. b
+3. c
+4. d
+5. f
+6. e
+
 ## Tools
 
 * IDE https://www.jetbrains.com/idea/
