@@ -1,7 +1,7 @@
 # Employee Map Dashboard application
 
 ## Developers
-1. a
+1. Szymon Stasiak
 2. b
 3. c
 4. d
