@@ -3,7 +3,7 @@
 ## Developers
 1. Szymon Stasiak
 2. Izzatulla Toshpulatov
-3. c
+3. Karol Wiewiór
 4. d
 5. f
 6. e
