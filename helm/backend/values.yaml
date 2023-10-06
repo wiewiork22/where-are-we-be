@@ -3,7 +3,7 @@ fullnameOverride: ""
 
 backend:
   container:
-    image: dbgliveuwacrsourcery.azurecr.io/vln-tk-team/backend:latest
+    image: 
     # default - 1
     replicas: 
     # default - 80 
