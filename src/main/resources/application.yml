@@ -12,3 +12,10 @@ mybatis:
   type-aliases-package: com.sourcery.oirs.config.mybatis
   configuration:
     map-underscore-to-camel-case: true
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    operations-sorter: method

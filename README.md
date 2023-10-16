@@ -51,3 +51,5 @@ Run directly via IDEA (Shift + F10) or
 ```bash
 ./gradlew bootRun
 ```
+
+Open Swagger here: http://localhost:8080/swagger-ui/index.html
