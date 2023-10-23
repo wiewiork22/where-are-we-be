@@ -5,6 +5,7 @@ import com.employeedashboard.oirs.mapper.EmployeeMapper;
 import com.employeedashboard.oirs.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import java.util.List;
 
@@ -19,7 +20,9 @@ public class EmployeeService {
         return mapper.mapToEmployeesList(repository.getAll());
     }
 
-    public EmployeesDTO getEmployee(final int Id) {
-        return mapper.mapToEmployeesDTO(repository.getById(Id));
+    public EmployeesDTO getEmployee(final Integer id) {
+        return mapper.mapToEmployeesDTO(repository.getById(id)
+                .orElseThrow(
+                        () -> new NotFoundException(String.format("User with id: %d not found.", id))));
     }
 }

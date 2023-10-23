@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Mapper
@@ -14,5 +15,5 @@ public interface EmployeeRepository {
     List<Employees> getAll();
 
     @Select("SELECT * FROM employee_table WHERE id=#{id}")
-    Employees getById(int id);
+    Optional<Employees> getById(Integer id);
 }
