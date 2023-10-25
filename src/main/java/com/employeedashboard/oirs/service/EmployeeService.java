@@ -1,28 +1,17 @@
 package com.employeedashboard.oirs.service;
 
-import com.employeedashboard.oirs.dto.EmployeesDTO;
-import com.employeedashboard.oirs.mapper.EmployeeMapper;
-import com.employeedashboard.oirs.repository.EmployeeRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
+import com.employeedashboard.oirs.dto.EmployeeRequestDTO;
+import com.employeedashboard.oirs.dto.EmployeeResponseDTO;
 
 import java.util.List;
 
-@Service
-@RequiredArgsConstructor
-public class EmployeeService {
+public interface EmployeeService {
 
-    private final EmployeeRepository repository;
-    private final EmployeeMapper mapper;
+    List<EmployeeResponseDTO> getAllEmployees();
 
-    public List<EmployeesDTO> getAllEmployees() {
-        return mapper.mapToEmployeesList(repository.getAll());
-    }
+    EmployeeResponseDTO getEmployeeById(final int Id);
 
-    public EmployeesDTO getEmployee(final Integer id) {
-        return mapper.mapToEmployeesDTO(repository.getById(id)
-                .orElseThrow(
-                        () -> new NotFoundException(String.format("User with id: %d not found.", id))));
-    }
+    boolean updateEmployee(final EmployeeRequestDTO employeeRequestDTO, final int id);
+
+    EmployeeResponseDTO addEmployee(EmployeeRequestDTO employeeRequestDTO);
 }

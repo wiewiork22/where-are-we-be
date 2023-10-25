@@ -5,7 +5,7 @@
 2. Izzatulla Toshpulatov
 3. Przemysław Kubiak
 4. Karol Wiewiór
-5. e
+5. Enes Gunay
 6. f
 
 ## Tools
