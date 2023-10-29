@@ -41,3 +41,8 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+jar{
+    manifest {
+        attributes(Map.of("Main-Class", "com.employeedashboard.oirs.Application"))
+    }
+}
