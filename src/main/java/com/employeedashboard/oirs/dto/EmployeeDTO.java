@@ -1,8 +1,9 @@
 package com.employeedashboard.oirs.dto;
 
-public record EmployeeResponseDTO(
+public record EmployeeDTO(
         int id,
         String name,
+        String email,
         String position,
         String squad,
         String department,

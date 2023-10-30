@@ -2,9 +2,11 @@ package com.employeedashboard.oirs.controller;
 
 import com.employeedashboard.oirs.dto.EmployeeRequestDTO;
 import com.employeedashboard.oirs.dto.EmployeeResponseDTO;
+import com.employeedashboard.oirs.repository.EmployeeRepository;
 import com.employeedashboard.oirs.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +17,11 @@ import java.util.List;
 public class EmployeesController {
 
     private final EmployeeService service;
+
+    @PostMapping("")
+    public EmployeeResponseDTO register(@RequestBody EmployeeRequestDTO request) {
+        return service.addEmployee(request);
+    }
 
     @GetMapping("")
     public List<EmployeeResponseDTO> getAllEmployees() {
@@ -29,11 +36,5 @@ public class EmployeesController {
     @PutMapping("/{id}")
     public boolean updateEmployee(@RequestBody EmployeeRequestDTO employeeRequestDTO, @PathVariable("id") int id) {
         return service.updateEmployee(employeeRequestDTO, id);
-    }
-
-    @PostMapping()
-    @ResponseStatus(HttpStatus.CREATED)
-    public EmployeeResponseDTO createEmployee(@RequestBody EmployeeRequestDTO employeeRequestDTO) {
-        return service.addEmployee(employeeRequestDTO);
     }
 }

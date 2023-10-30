@@ -18,6 +18,7 @@ public class RestExceptionHandler {
         return new ExceptionResponse(ex.getMessage());
     }
 
+
     @ExceptionHandler(value = NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ExceptionResponse notFound(final NotFoundException ex) {
