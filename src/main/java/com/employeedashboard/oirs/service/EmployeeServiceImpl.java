@@ -89,4 +89,66 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .build();
         return addressRepository.updateAddress(address) && employeeRepository.updateEmployee(employee);
     }
+
+    private static final String ADMIN = "ADMIN";
+
+    public void addAdminIfAbsent() {
+        if (employeeRepository.findByEmail("admin@admin.com").isEmpty()) {
+
+            var address = Address.builder()
+                    .street(ADMIN)
+                    .city(ADMIN)
+                    .state(ADMIN)
+                    .postCode(ADMIN)
+                    .country(ADMIN)
+                    .build();
+
+            addressRepository.save(address);
+            var employee = Employee.builder()
+                    .name(ADMIN)
+                    .email("admin@admin.com")
+                    .position(ADMIN)
+                    .squad(ADMIN)
+                    .department(ADMIN)
+                    .addressId(address.getId())
+                    .password(passwordEncoder.encode("admin"))
+                    .role(Role.ADMIN)
+                    .build();
+            employeeRepository.add(employee);
+        }
+    }
+
+    private static final String EMPLOYEE = "EMPLOYEE";
+
+    public void addEmployeeIfAbsent() {
+        if (employeeRepository.findByEmail("employee@employee.com").isEmpty()) {
+
+            var address = Address.builder()
+                    .street(EMPLOYEE)
+                    .city(EMPLOYEE)
+                    .state(EMPLOYEE)
+                    .postCode(EMPLOYEE)
+                    .country(EMPLOYEE)
+                    .build();
+
+            addressRepository.save(address);
+            var employee = Employee.builder()
+                    .name(EMPLOYEE)
+                    .email("employe@employee.com")
+                    .position(EMPLOYEE)
+                    .squad(EMPLOYEE)
+                    .department(EMPLOYEE)
+                    .addressId(address.getId())
+                    .password(passwordEncoder.encode("employee"))
+                    .role(Role.USER)
+                    .build();
+            employeeRepository.add(employee);
+        }
+    }
+
+    public void addDefaultUsers() {
+        addAdminIfAbsent();
+        addEmployeeIfAbsent();
+    }
+
 }
