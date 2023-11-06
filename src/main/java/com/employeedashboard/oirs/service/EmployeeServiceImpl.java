@@ -51,6 +51,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .addressId(address.getId())
                 .password(passwordEncoder.encode("pass"))
                 .role(Role.USER)
+                .isEnabled(true)
                 .build();
         employeeRepository.add(employee);
         return mapper.mapToEmployeeResponseDTO(employee);
@@ -72,7 +73,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public boolean updateEmployee(final EmployeeRequestDTO employeeRequestDTO, final int id) {
 
         Address address = Address.builder()
-                .id(employeeRepository.getAddresId(id))
+                .id(employeeRepository.getAddressId(id))
                 .street(employeeRequestDTO.street())
                 .city(employeeRequestDTO.city())
                 .state(employeeRequestDTO.state())
@@ -86,61 +87,61 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .position(employeeRequestDTO.position())
                 .squad(employeeRequestDTO.squad())
                 .department(employeeRequestDTO.department())
+                .isEnabled(true)
                 .build();
         return addressRepository.updateAddress(address) && employeeRepository.updateEmployee(employee);
     }
-
-    private static final String ADMIN = "ADMIN";
 
     public void addAdminIfAbsent() {
         if (employeeRepository.findByEmail("admin@admin.com").isEmpty()) {
 
             var address = Address.builder()
-                    .street(ADMIN)
-                    .city(ADMIN)
-                    .state(ADMIN)
-                    .postCode(ADMIN)
-                    .country(ADMIN)
+                    .street(Role.ADMIN.name())
+                    .city(Role.ADMIN.name())
+                    .state(Role.ADMIN.name())
+                    .postCode(Role.ADMIN.name())
+                    .country(Role.ADMIN.name())
                     .build();
 
             addressRepository.save(address);
             var employee = Employee.builder()
-                    .name(ADMIN)
+                    .name(Role.ADMIN.name())
                     .email("admin@admin.com")
-                    .position(ADMIN)
-                    .squad(ADMIN)
-                    .department(ADMIN)
+                    .position(Role.ADMIN.name())
+                    .squad(Role.ADMIN.name())
+                    .department(Role.ADMIN.name())
                     .addressId(address.getId())
                     .password(passwordEncoder.encode("admin"))
                     .role(Role.ADMIN)
+                    .isEnabled(true)
                     .build();
             employeeRepository.add(employee);
         }
     }
 
-    private static final String EMPLOYEE = "EMPLOYEE";
 
     public void addEmployeeIfAbsent() {
         if (employeeRepository.findByEmail("employee@employee.com").isEmpty()) {
 
             var address = Address.builder()
-                    .street(EMPLOYEE)
-                    .city(EMPLOYEE)
-                    .state(EMPLOYEE)
-                    .postCode(EMPLOYEE)
-                    .country(EMPLOYEE)
+                    .street(Role.USER.name())
+                    .city(Role.USER.name())
+                    .state(Role.USER.name())
+                    .postCode(Role.USER.name())
+                    .country(Role.USER.name())
                     .build();
 
             addressRepository.save(address);
             var employee = Employee.builder()
-                    .name(EMPLOYEE)
-                    .email("employe@employee.com")
-                    .position(EMPLOYEE)
-                    .squad(EMPLOYEE)
-                    .department(EMPLOYEE)
+                    .name(Role.USER.name())
+                    .email("employee@employee.com")
+                    .position(Role.USER.name())
+                    .squad(Role.USER.name())
+                    .department(Role.USER.name())
                     .addressId(address.getId())
                     .password(passwordEncoder.encode("employee"))
                     .role(Role.USER)
+                    .isEnabled(true)
                     .build();
             employeeRepository.add(employee);
         }
@@ -151,4 +152,21 @@ public class EmployeeServiceImpl implements EmployeeService {
         addEmployeeIfAbsent();
     }
 
+    @Override
+    @Transactional
+    public void disableEmployeeById(final Integer id) {
+        Employee employee = employeeRepository.getById(id)
+                .orElseThrow(() -> new NotFoundException(String.format("User with id: %d not found.", id)));
+
+        Integer addressId = employee.getAddressId();
+
+        employee.setDepartment("NA");
+        employee.setPosition("NA");
+        employee.setSquad("NA");
+        employee.setEnabled(false);
+        employee.setAddressId(null);
+
+        employeeRepository.updateEmployee(employee);
+        addressRepository.deleteById(addressId);
+    }
 }

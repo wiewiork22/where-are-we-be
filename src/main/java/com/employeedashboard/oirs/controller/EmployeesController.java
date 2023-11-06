@@ -2,13 +2,10 @@ package com.employeedashboard.oirs.controller;
 
 import com.employeedashboard.oirs.dto.EmployeeRequestDTO;
 import com.employeedashboard.oirs.dto.EmployeeResponseDTO;
-import com.employeedashboard.oirs.repository.EmployeeRepository;
 import com.employeedashboard.oirs.service.EmployeeService;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -29,12 +26,17 @@ public class EmployeesController {
     }
 
     @GetMapping("/{id}")
-    public EmployeeResponseDTO getById(@PathVariable("id") int id) {
+    public EmployeeResponseDTO getById(@NonNull @PathVariable("id") int id) {
         return service.getEmployeeById(id);
     }
 
     @PutMapping("/{id}")
     public boolean updateEmployee(@RequestBody EmployeeRequestDTO employeeRequestDTO, @PathVariable("id") int id) {
         return service.updateEmployee(employeeRequestDTO, id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteEmployeeById(@NonNull @PathVariable("id") Integer id){
+        service.disableEmployeeById(id);
     }
 }

@@ -14,4 +14,6 @@ public interface EmployeeService {
     EmployeeResponseDTO getEmployeeById(final int Id);
 
     boolean updateEmployee(final EmployeeRequestDTO employeeRequestDTO, final int id);
+
+    void disableEmployeeById(Integer id);
 }

@@ -26,6 +26,7 @@ public class Employee implements UserDetails {
     private String department;
     private Integer addressId;
     private Role role;
+    private boolean isEnabled;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -58,7 +59,7 @@ public class Employee implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isEnabled;
     }
 }
 
