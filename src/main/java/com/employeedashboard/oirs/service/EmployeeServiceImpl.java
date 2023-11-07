@@ -27,20 +27,34 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Transactional
 	public EmployeeResponseDTO addEmployee(EmployeeRequestDTO request) {
 
-		if (employeeRepository.findByEmail(request.email()).isPresent()) {
-			throw new IllegalArgumentException(String.format("User with email: %s already exists.", request.email()));
-		}
+        employeeRepository.findByEmail(request.email())
+                .ifPresent(employee -> {
+                    throw new IllegalArgumentException(String.format("User with email: %s already exists.", employee.getEmail()));
+                });
 
-		var address = Address.builder().street(request.street()).city(request.city()).state(request.state())
-				.postCode(request.postCode()).country(request.country()).build();
+        var address = Address.builder()
+                .street(request.address().street())
+                .city(request.address().city())
+                .state(request.address().state())
+                .postCode(request.address().postCode())
+                .country(request.address().country())
+                .build();
 
-		addressRepository.save(address);
-		var employee = Employee.builder().name(request.name()).email(request.email()).position(request.position())
-				.squad(request.squad()).department(request.department()).addressId(address.getId())
-				.password(passwordEncoder.encode("pass")).role(Role.USER).isEnabled(true).build();
-		employeeRepository.add(employee);
-		return mapper.mapToEmployeeResponseDTO(employee);
-	}
+        addressRepository.save(address);
+        var employee = Employee.builder()
+                .name(request.fullName())
+                .email(request.email())
+                .position(request.position())
+                .squad(request.squad())
+                .department(request.department())
+                .addressId(address.getId())
+                .password(passwordEncoder.encode("pass"))
+                .role(Role.USER)
+                .isEnabled(true)
+                .build();
+        employeeRepository.add(employee);
+        return mapper.mapToEmployeeResponseDTO(employee);
+    }
 
 	public List<EmployeeResponseDTO> getAllEmployees() {
 		return mapper.mapToEmployeeResponseDTOList(employeeRepository.getAll());
@@ -54,15 +68,25 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	public boolean updateEmployee(final EmployeeRequestDTO employeeRequestDTO, final int id) {
 
-		Address address = Address.builder().id(employeeRepository.getAddressId(id)).street(employeeRequestDTO.street())
-				.city(employeeRequestDTO.city()).state(employeeRequestDTO.state())
-				.postCode(employeeRequestDTO.postCode()).country(employeeRequestDTO.country()).build();
+        Address address = Address.builder()
+                .id(employeeRepository.getAddressId(id))
+                .street(employeeRequestDTO.address().street())
+                .city(employeeRequestDTO.address().city())
+                .state(employeeRequestDTO.address().state())
+                .postCode(employeeRequestDTO.address().postCode())
+                .country(employeeRequestDTO.address().country())
+                .build();
 
-		Employee employee = Employee.builder().id(id).name(employeeRequestDTO.name())
-				.position(employeeRequestDTO.position()).squad(employeeRequestDTO.squad())
-				.department(employeeRequestDTO.department()).isEnabled(true).build();
-		return addressRepository.updateAddress(address) && employeeRepository.updateEmployee(employee);
-	}
+        Employee employee = Employee.builder()
+                .id(id)
+                .name(employeeRequestDTO.fullName())
+                .position(employeeRequestDTO.position())
+                .squad(employeeRequestDTO.squad())
+                .department(employeeRequestDTO.department())
+                .isEnabled(true)
+                .build();
+        return addressRepository.updateAddress(address) && employeeRepository.updateEmployee(employee);
+    }
 
 	public void addAdminIfAbsent() {
 		if (employeeRepository.findByEmail("admin@admin.com").isEmpty()) {
