@@ -52,4 +52,7 @@ Run directly via IDEA (Shift + F10) or
 ./gradlew bootRun
 ```
 
+USE -> ./gradlew spotlessApply BEFORE COMMIT TO FORMAT CODE
+
+
 Open Swagger here: http://localhost:8080/swagger-ui/index.html

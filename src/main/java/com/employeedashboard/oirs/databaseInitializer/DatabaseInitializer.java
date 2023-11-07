@@ -7,15 +7,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class DatabaseInitializer implements CommandLineRunner {
 
-    private final EmployeeServiceImpl employeeServiceImpl;
+	private final EmployeeServiceImpl employeeServiceImpl;
 
-    public DatabaseInitializer(EmployeeServiceImpl employeeServiceImpl) {
-        this.employeeServiceImpl = employeeServiceImpl;
-    }
+	public DatabaseInitializer(EmployeeServiceImpl employeeServiceImpl) {
+		this.employeeServiceImpl = employeeServiceImpl;
+	}
 
-    @Override
-    public void run(String... args) {
-        employeeServiceImpl.addDefaultUsers();
-    }
+	@Override
+	public void run(String... args) {
+		employeeServiceImpl.addDefaultUsers();
+	}
 
 }
