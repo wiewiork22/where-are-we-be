@@ -88,16 +88,17 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .country(employeeRequestDTO.address().country())
                 .build();
 
-        Employee employee = Employee.builder()
-                .id(id)
-                .name(employeeRequestDTO.fullName())
-                .position(employeeRequestDTO.position())
-                .squad(employeeRequestDTO.squad())
-                .department(employeeRequestDTO.department())
-                .isEnabled(true)
-                .build();
-        return addressRepository.updateAddress(address) && employeeRepository.updateEmployee(employee);
-    }
+		Employee employee = Employee.builder()
+				.id(id)
+				.name(employeeRequestDTO.fullName())
+				.position(employeeRequestDTO.position())
+				.squad(employeeRequestDTO.squad())
+				.department(employeeRequestDTO.department())
+				.isEnabled(true)
+				.addressId(address.getId())
+				.build();
+		return addressRepository.updateAddress(address) && employeeRepository.updateEmployee(employee);
+	}
 
 	public void addAdminIfAbsent() {
 		if (employeeRepository.findByEmail("admin@admin.com").isEmpty()) {
