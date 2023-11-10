@@ -1,10 +1,10 @@
 package com.employeedashboard.oirs.mapper;
 
 import com.employeedashboard.oirs.domain.Employee;
+import com.employeedashboard.oirs.dto.AddressDTO;
 import com.employeedashboard.oirs.dto.EmployeeDTO;
 import com.employeedashboard.oirs.dto.EmployeeRequestDTO;
 import com.employeedashboard.oirs.dto.EmployeeResponseDTO;
-import java.util.List;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -24,14 +24,9 @@ public class EmployeeMapper {
 				employee.getSquad(), employee.getDepartment(), employee.getAddressId());
 	}
 
-	public EmployeeResponseDTO mapToEmployeeResponseDTO(final Employee employee) {
+	public EmployeeResponseDTO mapToEmployeeResponseDTO(final Employee employee, AddressDTO address) {
 		return new EmployeeResponseDTO(employee.getId(), employee.getName(), employee.getPosition(),
-				employee.getSquad(), employee.getDepartment(), employee.getAddressId());
+				employee.getSquad(), employee.getDepartment(), address);
 	}
 
-	public List<EmployeeResponseDTO> mapToEmployeeResponseDTOList(final List<Employee> employeeList) {
-
-		return employeeList.stream().map(this::mapToEmployeeResponseDTO).toList();
-
-	}
 }

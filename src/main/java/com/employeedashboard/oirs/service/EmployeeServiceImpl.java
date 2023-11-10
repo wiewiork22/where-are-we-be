@@ -5,10 +5,13 @@ import com.employeedashboard.oirs.domain.Employee;
 import com.employeedashboard.oirs.domain.Role;
 import com.employeedashboard.oirs.dto.EmployeeRequestDTO;
 import com.employeedashboard.oirs.dto.EmployeeResponseDTO;
+import com.employeedashboard.oirs.mapper.AddressMapper;
 import com.employeedashboard.oirs.mapper.EmployeeMapper;
 import com.employeedashboard.oirs.repository.AddressRepository;
 import com.employeedashboard.oirs.repository.EmployeeRepository;
+
 import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,10 +22,11 @@ import org.webjars.NotFoundException;
 @RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
 
-	private final EmployeeRepository employeeRepository;
-	private final EmployeeMapper mapper;
-	private final PasswordEncoder passwordEncoder;
-	private final AddressRepository addressRepository;
+    private final EmployeeRepository employeeRepository;
+    private final EmployeeMapper employeeMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final AddressRepository addressRepository;
+    private final AddressMapper addressMapper;
 
 	@Transactional
 	public EmployeeResponseDTO addEmployee(EmployeeRequestDTO request) {
@@ -53,18 +57,25 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .isEnabled(true)
                 .build();
         employeeRepository.add(employee);
-        return mapper.mapToEmployeeResponseDTO(employee);
+        return employeeMapper.mapToEmployeeResponseDTO(employee, addressMapper.mapToAddressDTO(address));
     }
 
 	public List<EmployeeResponseDTO> getAllEmployees() {
-		return mapper.mapToEmployeeResponseDTOList(employeeRepository.getAll());
-	}
+		return employeeRepository.getAll().stream()
+				.map(employee -> employeeMapper.mapToEmployeeResponseDTO(employee,
+						addressMapper.mapToAddressDTO(
+								addressRepository.getById(employee.getAddressId()).orElse(new Address()))))
+				.toList();
 
-	@Override
-	public EmployeeResponseDTO getEmployeeById(int id) {
-		return mapper.mapToEmployeeResponseDTO(employeeRepository.getById(id)
-				.orElseThrow(() -> new NotFoundException(String.format("User with id: %d not found.", id))));
-	}
+    }
+
+    @Override
+    public EmployeeResponseDTO getEmployeeById(int id) {
+        var employee = employeeRepository.getById(id)
+                .orElseThrow(() -> new NotFoundException(String.format("User with id: %d not found.", id)));
+        var address = addressRepository.getById(employee.getAddressId()).orElse(new Address());
+        return employeeMapper.mapToEmployeeResponseDTO(employee, addressMapper.mapToAddressDTO(address));
+    }
 
 	public boolean updateEmployee(final EmployeeRequestDTO employeeRequestDTO, final int id) {
 
