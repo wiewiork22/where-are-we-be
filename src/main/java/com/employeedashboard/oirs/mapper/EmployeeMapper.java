@@ -9,15 +9,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class EmployeeMapper {
-    public Employee mapToEmployee(final EmployeeRequestDTO employeeRequestDTO) {
-        return Employee
-                .builder()
-                .name(employeeRequestDTO.fullName())
-                .department(employeeRequestDTO.department())
-                .position(employeeRequestDTO.position())
-                .squad(employeeRequestDTO.squad())
-                .build();
-    }
+	public Employee mapToEmployee(final EmployeeRequestDTO employeeRequestDTO) {
+		return Employee.builder().name(employeeRequestDTO.fullName()).department(employeeRequestDTO.department())
+				.position(employeeRequestDTO.position()).squad(employeeRequestDTO.squad()).build();
+	}
 
 	public EmployeeDTO mapToEmployeesDTO(final Employee employee) {
 		return new EmployeeDTO(employee.getId(), employee.getName(), employee.getEmail(), employee.getPosition(),

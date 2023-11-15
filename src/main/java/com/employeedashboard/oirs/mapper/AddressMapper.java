@@ -8,6 +8,6 @@ import org.springframework.stereotype.Component;
 public class AddressMapper {
 	public AddressDTO mapToAddressDTO(Address address) {
 		return new AddressDTO(address.getStreet(), address.getCity(), address.getState(), address.getPostCode(),
-				address.getCountry());
+				address.getCountry(), address.getLat(), address.getLng());
 	}
 }

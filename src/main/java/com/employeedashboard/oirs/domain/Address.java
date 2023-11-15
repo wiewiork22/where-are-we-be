@@ -17,5 +17,7 @@ public class Address {
 	private String state;
 	private String postCode;
 	private String country;
+	private Double lat;
+	private Double lng;
 
 }

@@ -14,12 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Mapper
 public interface AddressRepository {
-	@Insert("INSERT INTO address (street, city, state, postcode, country) VALUES (#{street}, #{city}, #{state}, #{postCode}, #{country})")
+	@Insert("INSERT INTO address (street, city, state, postcode, country, lat, lng) VALUES (#{street}, #{city}, #{state}, #{postCode}, #{country} , #{lat}, #{lng})")
 	@Options(useGeneratedKeys = true, keyProperty = "id")
 	void save(Address address);
 
 	@Transactional
-	@Update("UPDATE address SET street = #{street}, city = #{city}, state = #{state}, postcode = #{postCode}, country = #{country} WHERE id = #{id}")
+	@Update("UPDATE address SET street = #{street}, city = #{city}, state = #{state}, postcode = #{postCode}, country = #{country}, lat = #{lat}, lng = #{lng} WHERE id = #{id}")
 	boolean updateAddress(Address address);
 
 	@Select("Select * FROM address a WHERE id = #{addressId}")
