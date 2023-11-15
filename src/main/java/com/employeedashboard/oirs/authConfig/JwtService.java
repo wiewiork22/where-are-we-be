@@ -1,5 +1,6 @@
 package com.employeedashboard.oirs.authConfig;
 
+import com.employeedashboard.oirs.domain.Employee;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -33,7 +34,8 @@ public class JwtService {
 
 	public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
 		return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
-				.claim("authorities", userDetails.getAuthorities()).setIssuedAt(new Date(System.currentTimeMillis()))
+				.claim("authorities", userDetails.getAuthorities()).claim("id", ((Employee) userDetails).getId())
+				.setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + 216000000))
 				.signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
 	}
