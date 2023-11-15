@@ -69,11 +69,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 		Address address = Address.builder().id(employeeRepository.getAddressId(id))
 				.street(employeeRequestDTO.address().street()).city(employeeRequestDTO.address().city())
 				.state(employeeRequestDTO.address().state()).postCode(employeeRequestDTO.address().postCode())
-				.country(employeeRequestDTO.address().country()).lat(employeeRequestDTO.address().lat()).lng(employeeRequestDTO.address().lng()).build();
+				.country(employeeRequestDTO.address().country()).lat(employeeRequestDTO.address().lat())
+				.lng(employeeRequestDTO.address().lng()).build();
 
 		Employee employee = Employee.builder().id(id).name(employeeRequestDTO.fullName())
-				.position(employeeRequestDTO.position()).squad(employeeRequestDTO.squad())
-				.department(employeeRequestDTO.department()).isEnabled(true).addressId(address.getId()).build();
+				.email(employeeRequestDTO.email()).position(employeeRequestDTO.position())
+				.squad(employeeRequestDTO.squad()).department(employeeRequestDTO.department()).isEnabled(true)
+				.addressId(address.getId()).build();
 		return addressRepository.updateAddress(address) && employeeRepository.updateEmployee(employee);
 	}
 
