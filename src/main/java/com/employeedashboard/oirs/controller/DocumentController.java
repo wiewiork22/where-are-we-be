@@ -20,11 +20,8 @@ public class DocumentController {
 	private final ImageService imageService;
 
 	@PostMapping(value = "/image")
-	public String uploadEmployeeImage(
-			@RequestParam(name = "employeeId") Integer employeeId,
-			@RequestParam(name = "file") MultipartFile file,
-			@AuthenticationPrincipal UserDetails userDetails
-	) {
+	public String uploadEmployeeImage(@RequestParam(name = "employeeId") Integer employeeId,
+			@RequestParam(name = "file") MultipartFile file, @AuthenticationPrincipal UserDetails userDetails) {
 
 		if (authenticationService.isAdmin(userDetails)
 				|| authenticationService.isUserOwnerOfId(userDetails, employeeId)) {
