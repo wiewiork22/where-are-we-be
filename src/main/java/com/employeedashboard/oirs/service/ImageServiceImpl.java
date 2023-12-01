@@ -6,6 +6,7 @@ import com.sun.jdi.InternalException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.webjars.NotFoundException;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +33,12 @@ public class ImageServiceImpl implements ImageService {
 		} catch (Exception e) {
 			throw new InternalException("Image upload failed");
 		}
+	}
+
+	@Override
+	public ImageFile getImageByEmployeeEmail(String email) {
+		return documentRepository.getImageByEmployeeEmail(email).orElseThrow(
+				() -> new NotFoundException(String.format("Attachment of employee with email=%s not found", email)));
 	}
 
 	private boolean validateImageSize(MultipartFile file) {
