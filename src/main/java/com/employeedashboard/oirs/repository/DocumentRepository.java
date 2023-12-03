@@ -11,7 +11,8 @@ import org.springframework.stereotype.Repository;
 @Mapper
 public interface DocumentRepository {
 
-	@Insert("INSERT INTO image_file (employee_id, image_data) VALUES (#{employeeId}, #{imageData, jdbcType=BLOB})")
+	@Insert("INSERT INTO image_file (employee_id, image_data) VALUES (#{employeeId}, #{imageData, jdbcType=BLOB}) "
+			+ "ON CONFLICT (employee_id) DO UPDATE SET image_data = EXCLUDED.image_data")
 	void insertImage(ImageFile image);
 
 	@Select("SELECT * FROM image_file i INNER JOIN employee_table e ON e.email = #{employeeEmail} AND e.id = i.employee_id")
